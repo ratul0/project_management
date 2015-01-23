@@ -10,6 +10,10 @@
                 <li>
                     <a href="{{route('teacher.invite')}}"><i class="fa fa-dashboard fa-fw"></i> Invite Teacher</a>
                 </li>
+
+                <li>
+                    <a href="{{route('student.invite')}}"><i class="fa fa-dashboard fa-fw"></i> Invite Student</a>
+                </li>
             @endif
 
             {{--<li>

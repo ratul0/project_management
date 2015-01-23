@@ -7,7 +7,7 @@
 <h2>Register for PM</h2>
 
 <div>
-    Register Here: {{ route('emails.register', $code) }}.<br/>
+    Register Here: {{ route('emails.student.register', $code) }}.<br/>
 
 </div>
 </body>

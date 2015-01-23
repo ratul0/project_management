@@ -91,3 +91,15 @@ Route::filter('Admin',function(){
 		return Redirect::to('/');
 	}
 });
+
+Route::filter('Teacher',function(){
+	if(! Entrust::hasRole(Config::get('globalData.roles.Teacher'))){
+		return Redirect::to('/');
+	}
+});
+
+Route::filter('Student',function(){
+	if(! Entrust::hasRole(Config::get('globalData.roles.Student'))){
+		return Redirect::to('/');
+	}
+});

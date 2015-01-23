@@ -28,9 +28,7 @@
                         {{Form::close()}}
                     </div>
 
-                    <div id="tabs" data-tabs="tabs">
-                        <p class="text-center"><a href="{{route('register')}}">Need an Account?</a></p>
-                    </div>
+                    
                 </div>
             </div>
         </div>

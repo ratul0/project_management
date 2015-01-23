@@ -7,6 +7,7 @@ Route::get('/',['as'=> 'home','uses'=> function(){
 }]);
 
 Route::get('emails/register/{code}',['as'=>'emails.register','uses' => 'AuthController@emailRegister']);
+Route::get('emails/student/register/{code}',['as'=>'emails.student.register','uses' => 'AuthController@studentEmailRegister']);
 
 
 
@@ -18,8 +19,7 @@ Route::group(['before'=>'guest'],function(){
 	Route::post('login',['as'=> 'doLogin','uses'=>'AuthController@doLogin']);
 
 
-	Route::get('register',['as'=> 'register','uses'=>'AuthController@register']);
-	Route::post('register',['as'=> 'doRegister','uses'=>'AuthController@doRegister']);
+
 	/*AuthController*/
 });
 
@@ -42,8 +42,6 @@ Route::group(['before'=>'auth'],function(){
 
 	/*UserController*/
 
-	Route::get('registration/complete', array('as' => 'registration.complete', 'uses' => 'AuthController@completeRegistration'));
-	Route::post('registration/complete', array('as' => 'registration.doComplete', 'uses' => 'AuthController@doCompleteRegistration'));
 
 
 });
@@ -52,7 +50,23 @@ Route::group(['before'=>'auth'],function(){
 Route::group(['before'=>'Admin'],function(){
 	Route::get('invite/teacher',['as'=> 'teacher.invite','uses'=>'AuthController@inviteTeacher']);
 	Route::post('invite/teacher',['as'=> 'teacher.doInvite','uses'=>'AuthController@doInviteTeacher']);
+
+	Route::get('invite/student',['as'=> 'student.invite','uses'=>'AuthController@inviteStudent']);
+	Route::post('invite/student',['as'=> 'student.doInvite','uses'=>'AuthController@doInviteStudent']);
 });
+
+Route::group(['before'=>'Teacher'],function(){
+	Route::get('registration/complete', ['as' => 'registration.complete', 'uses' => 'AuthController@completeRegistration']);
+	Route::post('registration/complete', ['as' => 'registration.doComplete', 'uses' => 'AuthController@doCompleteRegistration']);
+
+});
+
+Route::group(['before'=>'Student'],function(){
+	Route::get('registration/complete/student', ['as' => 'registration.student.complete', 'uses' => 'AuthController@completeStudentRegistration']);
+	Route::post('registration/complete/student', ['as' => 'registration.student.doComplete', 'uses' => 'AuthController@doCompleteStudentRegistration']);
+
+});
+
 
 
 

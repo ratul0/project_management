@@ -192,4 +192,103 @@ class AuthController extends \BaseController {
 		}
 	}
 
+
+	public function inviteStudent(){
+		return View::make('auth.inviteStudent')
+					->with('title','Invite Student');
+	}
+
+	public function doInviteStudent(){
+		$rules = [
+
+					'email'                 =>	'required|email|unique:users'
+		];
+		$inputData = Input::all();
+		$validator = Validator::make($inputData, $rules);
+
+		if ($validator->fails()) {
+
+			// redirect our user back to the form with the errors from the validator
+			return Redirect::back()
+						->withErrors($validator)->withInput();
+
+		}else{
+
+			$random_hash = md5(uniqid(rand(), true));
+			$data = [
+						'code'  =>  $random_hash
+			];
+
+			Mail::send('emails.studentRegister', $data, function($message) use ($inputData)
+			{
+				$message->to($inputData['email'])->subject('Welcome!');
+			});
+
+			$user = User::create([
+
+						'email' => $inputData['email'],
+						'password' 	=> Hash::make('user'),
+						'confirmation_code' => $data['code'],
+						'created_at' => date('Y-m-d H:i:s'),
+						'updated_at' => date('Y-m-d H:i:s')
+
+
+			]);
+
+			// attach user in assigned_role table
+			$user->attachRole(Role::where('name',Config::get('globalData.roles.Student'))->first());
+
+
+			return Redirect::route('dashboard')
+						->with('success','Invitation send to Student.');
+		}
+	}
+
+	public function studentEmailRegister($code){
+		if($user = User::where('confirmation_code',$code)->first()){
+			Auth::login($user);
+			return Redirect::route('registration.student.complete');
+		}
+	}
+
+	public function completeStudentRegistration(){
+		return View::make('auth.studentRegister');
+	}
+
+	public function doCompleteStudentRegistration(){
+		$rules = [
+					'first_name' => 'required',
+					'last_name'  => 'required',
+					'mobile'     => 'required',
+					'password'              =>	'required|confirmed',
+					'password_confirmation' => 	'required'
+		];
+		$data = Input::all();
+
+		$validator = Validator::make($data, $rules);
+
+		if ($validator->fails()) {
+
+			// redirect our user back to the form with the errors from the validator
+			return Redirect::back()
+						->withErrors($validator)->withInput();
+
+		}else{
+			$user = User::find(Auth::user()->id);
+
+			$user->first_name = $data['first_name'];
+			$user->last_name = $data['last_name'];
+			$user->mobile = $data['mobile'];
+			$user->password = Hash::make($data['password']);
+			$user->confirmation_code = null;
+			if($user->save()){
+				Auth::logout();
+				return Redirect::route('login');
+
+			}else{
+				return Redirect::back()->withErrors($validator)->withInput();
+			}
+		}
+	}
+
 }
