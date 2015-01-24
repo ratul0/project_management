@@ -5,15 +5,23 @@
             <li>
                 <a href="{{route('dashboard')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
-            @if(Entrust::hasRole('Admin'))
+            @if(Entrust::hasRole(Config::get('globalData.roles.Admin')))
 
                 <li>
-                    <a href="{{route('teacher.invite')}}"><i class="fa fa-dashboard fa-fw"></i> Invite Teacher</a>
+                    <a href="{{route('teacher.invite')}}"><i class="fa fa-share"></i> Invite Teacher</a>
                 </li>
 
                 <li>
-                    <a href="{{route('student.invite')}}"><i class="fa fa-dashboard fa-fw"></i> Invite Student</a>
+                    <a href="{{route('student.invite')}}"><i class="fa fa-share"></i> Invite Student</a>
                 </li>
+            @endif
+
+            @if(Entrust::hasRole(Config::get('globalData.roles.Admin')) or Entrust::hasRole(Config::get('globalData.roles.Teacher')))
+
+                <li>
+                    <a href="{{route('batches.index')}}"><i class="fa fa-bullseye"></i> Show Batches</a>
+                </li>
+
             @endif
 
             {{--<li>

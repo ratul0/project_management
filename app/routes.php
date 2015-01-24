@@ -67,7 +67,9 @@ Route::group(['before'=>'Student'],function(){
 
 });
 
-
+Route::group(['before'=> 'AdminTeacher'],function(){
+	Route::resource('batches', 'BatchesController');
+});
 
 
 

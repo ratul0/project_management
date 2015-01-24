@@ -103,3 +103,11 @@ Route::filter('Student',function(){
 		return Redirect::to('/');
 	}
 });
+
+Route::filter('AdminTeacher',function(){
+	if(! Entrust::hasRole(Config::get('globalData.roles.Admin'))){
+		if(! Entrust::hasRole(Config::get('globalData.roles.Teacher'))){
+			return Redirect::to('/');
+		}
+	}
+});

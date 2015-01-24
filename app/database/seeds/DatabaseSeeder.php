@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('PermissionsTableSeeder');
 		$this->call('UserTableSeeder');
 		$this->call('EntrustTableSeeder');
+		$this->call('BatchesTableSeeder');
 
 
 
